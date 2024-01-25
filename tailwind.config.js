@@ -6,16 +6,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        orange: "#FDA214",
-        lightGrey: "#BCCED9",
-        lightGrey2: "#DFE7EC",
-        darkGrey: "#304859",
-        darkBlue: "#152938",
-        veryLightGray: "#F2F2F2",
-        grey: "#7191A5",
-        lightBlue: "#6395B8",
-        white: "#FCFCFC",
-        hoverOrange: "#FFB84A",
+        purple: "#5D37F3",
+        white: "#FFFFFF",
+        white2: "#F3F2FA",
+        green: "#B7E5B4",
+        pink: "#FFA447",  
+        yellow: "#FFD447",
+        blue: "#7BD3EA"
+        
       },
     },
 
