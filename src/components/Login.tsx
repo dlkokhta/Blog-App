@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import registrationSchema from "./registrationSchema";
+import loginSchema from "./loginSchema";
 import axios from "axios";
 
 interface RegistrationProps {
@@ -9,12 +9,11 @@ interface RegistrationProps {
 }
 
 interface dataForm {
-  username: string;
   email: string;
   password: string;
 }
 
-const Registration: React.FC<RegistrationProps> = ({
+const Login: React.FC<RegistrationProps> = ({
   backgroundClick,
   toggleRegistration,
 }) => {
@@ -28,16 +27,16 @@ const Registration: React.FC<RegistrationProps> = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<dataForm>({ resolver: yupResolver(registrationSchema) });
+  } = useForm<dataForm>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: dataForm) => {
+    console.log("clicked");
     console.log(data);
     // Perform any additional logic or API calls here
 
-    const url = "http://localhost:3000/api/registration";
+    const url = "http://localhost:3000/api/login";
 
     const userData = {
-      username: data.username,
       email: data.email,
       password: data.password,
     };
@@ -45,6 +44,9 @@ const Registration: React.FC<RegistrationProps> = ({
     try {
       const response = await axios.post(url, userData);
       console.log("response!!!!!!", response);
+      const authToken = response.data.token;
+      console.log("authToken", authToken);
+      localStorage.setItem("authToken", authToken);
       reset();
     } catch (error) {
       console.log(error);
@@ -65,18 +67,6 @@ const Registration: React.FC<RegistrationProps> = ({
           onSubmit={handleSubmit(onSubmit)}
           className="p-6 bg white bg-white2 rounded-md bg-green "
         >
-          <div className="mb-4">
-            <label className="block" htmlFor="username">
-              username
-            </label>
-            <input
-              className="rounded"
-              type="text"
-              id="username"
-              {...register("username")}
-            />
-            {errors.username ? <p>{errors.username.message}</p> : null}
-          </div>
           <div className="mb-4">
             <label className="block" htmlFor="email">
               email
@@ -110,4 +100,4 @@ const Registration: React.FC<RegistrationProps> = ({
   );
 };
 
-export default Registration;
+export default Login;

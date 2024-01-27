@@ -1,10 +1,16 @@
 import logo from "../assets/Logo.png";
 import Registration from "./Registration";
 import { useState } from "react";
+import Login from "./Login";
 const Header = () => {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
   const registrationCLickHandle = () => {
     setIsRegistrationOpen(!isRegistrationOpen);
+  };
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const loginClickhandler = () => {
+    setIsLoginOpen(!isLoginOpen);
+    console.log("login");
   };
 
   return (
@@ -19,7 +25,10 @@ const Header = () => {
             >
               რეგისტრაცია
             </button>
-            <button className="bg-green text-white py-3 px-5 rounded-xl">
+            <button
+              onClick={loginClickhandler}
+              className="bg-green text-white py-3 px-5 rounded-xl"
+            >
               შესვლა
             </button>
           </div>
@@ -27,7 +36,16 @@ const Header = () => {
       </header>
       <div>
         {isRegistrationOpen && (
-          <Registration backgroundClick={isRegistrationOpen} toggleRegistration={setIsRegistrationOpen}/>
+          <Registration
+            backgroundClick={isRegistrationOpen}
+            toggleRegistration={setIsRegistrationOpen}
+          />
+        )}
+        {isLoginOpen && (
+          <Login
+            backgroundClick={isLoginOpen}
+            toggleRegistration={setIsLoginOpen}
+          />
         )}
       </div>
     </div>
