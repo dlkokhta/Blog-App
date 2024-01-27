@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import loginSchema from "./loginSchema";
+import axios from "axios";
 
 interface RegistrationProps {
   backgroundClick: boolean;
@@ -17,7 +18,7 @@ const Registration: React.FC<RegistrationProps> = ({
   backgroundClick,
   toggleRegistration,
 }) => {
-  const backgroundClickhandler = (e: any) => {
+  const backgroundClickhandler = (e) => {
     e.preventDefault();
     toggleRegistration(!backgroundClick);
   };
@@ -31,6 +32,21 @@ const Registration: React.FC<RegistrationProps> = ({
   const onSubmit = async (data: dataForm) => {
     console.log(data);
     // Perform any additional logic or API calls here
+
+    const url = "http://localhost:3000/api/registration";
+
+    const userData = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+      const response = await axios.post(url, userData);
+      console.log("response!!!!!!", response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
