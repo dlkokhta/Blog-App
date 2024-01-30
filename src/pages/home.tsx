@@ -1,11 +1,11 @@
-import Header from "../components/Header";
 import Main from "../components/Main";
+import GetAllBlogs from "../components/GetAllBlogs";
 
 const home = () => {
   return (
     <div>
-      <Header />
       <Main />
+      <GetAllBlogs />
     </div>
   );
 };

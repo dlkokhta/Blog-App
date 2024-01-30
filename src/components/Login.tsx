@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import loginSchema from "./loginSchema";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface RegistrationProps {
   backgroundClick: boolean;
@@ -17,21 +19,23 @@ const Login: React.FC<RegistrationProps> = ({
   backgroundClick,
   toggleRegistration,
 }) => {
+  const [responseError, setResponseError] = useState(null);
   const backgroundClickhandler = (e) => {
     e.preventDefault();
     toggleRegistration(!backgroundClick);
   };
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<dataForm>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: dataForm) => {
     console.log("clicked");
     console.log(data);
+
     // Perform any additional logic or API calls here
 
     const url = "http://localhost:3000/api/login";
@@ -43,16 +47,21 @@ const Login: React.FC<RegistrationProps> = ({
 
     try {
       const response = await axios.post(url, userData);
-      console.log("response!!!!!!", response);
+
       const authToken = response.data.token;
-      console.log("authToken", authToken);
+
       localStorage.setItem("authToken", authToken);
-      reset();
+      navigate("/dashboard");
+      toggleRegistration(!backgroundClick);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        setResponseError(error.response?.data.message);
+        console.log("errorrr", error);
+      }
     }
-    toggleRegistration(!backgroundClick);
   };
+
+  console.log("responseError", responseError);
 
   return (
     <div
@@ -71,13 +80,14 @@ const Login: React.FC<RegistrationProps> = ({
             <label className="block" htmlFor="email">
               email
             </label>
+
             <input
               className="rounded"
               type="text"
               id="email"
               {...register("email")}
             />
-            {errors.email ? <p>{errors.email.message}</p> : null}
+            {responseError ? <h1>{responseError}</h1> : null}
           </div>
           <div className="mb-4">
             <label className="block" htmlFor="password">
@@ -89,7 +99,7 @@ const Login: React.FC<RegistrationProps> = ({
               id="password"
               {...register("password")}
             />
-            {errors.password ? <p>{errors.password.message}</p> : null}
+            {responseError ? <h1>{responseError}</h1> : null}
           </div>
           <div className="text-center">
             <button type="submit">Submit</button>
