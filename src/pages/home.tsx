@@ -5,6 +5,7 @@ const home = () => {
   return (
     <div>
       <Main />
+
       <GetAllBlogs />
     </div>
   );

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import CreateBlogSchema from "./createBlogSchema";
+import createBlogSchema from "./createBlogSchema";
 import axios from "axios";
 
 interface CreateBlogProps {
@@ -8,10 +8,10 @@ interface CreateBlogProps {
   toggleRegistration: (value: boolean) => void;
 }
 
-interface dataForm {
+interface FormData {
   title: string;
   description: string;
-  avatar: string;
+  avatar: FileList;
   author: string;
   categories: string;
 }
@@ -31,33 +31,30 @@ const CreateBlog: React.FC<CreateBlogProps> = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<dataForm>({ resolver: yupResolver(CreateBlogSchema) });
+  } = useForm<FormData>({ resolver: yupResolver(createBlogSchema) });
 
-  const onSubmit = async (data: dataForm) => {
-    console.log(data);
-    // Perform any additional logic or API calls here
+  const onSubmit = async (data: FormData) => {
+    console.log("dataaaa", data);
 
     const url = "http://localhost:3000/api/create-blog";
-
     const token = localStorage.getItem("authToken");
-    // console.log("token from localstorage", token);
 
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("avatar", data.avatar[0]); // Assuming only one file is selected
+    formData.append("avatar", data.avatar[0]); // Assuming you want only the first file in the list
     formData.append("author", data.author);
     formData.append("categories", data.categories);
 
     try {
       const response = await axios.post(url, formData, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // Make sure to set this header
         },
       });
       console.log("response!!!!!!", response);
-      // reset();
+      reset();
     } catch (error) {
       console.log(error);
     }
@@ -74,73 +71,72 @@ const CreateBlog: React.FC<CreateBlogProps> = ({
       >
         <form
           encType="multipart/form-data"
-          onSubmit={onSubmit}
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="p-6 bg white bg-white2 rounded-md bg-green "
         >
           <div className="mb-4">
             <label className="block" htmlFor="title">
-              title
+              Title
             </label>
             <input
               className="rounded"
               type="text"
               id="title"
-              // {...register("title")}
+              {...register("title")}
             />
-            {/* {errors.title ? <p>{errors.title.message}</p> : null} */}
+            {errors.title ? <p>{errors.title.message}</p> : null}
           </div>
 
           <div className="mb-4">
             <label className="block" htmlFor="description">
-              description
+              Description
             </label>
             <input
               className="rounded"
               type="text"
               id="description"
-              // {...register("description")}
+              {...register("description")}
             />
-            {/* {errors.description ? <p>{errors.description.message}</p> : null} */}
+            {errors.description ? <p>{errors.description.message}</p> : null}
           </div>
 
           <div className="mb-4">
             <label className="block" htmlFor="avatar">
-              avatar
+              Avatar
             </label>
             <input
               className="rounded"
               type="file"
               id="avatar"
-              // {...register("avatar")}
+              {...register("avatar")}
             />
-            {/* {errors.avatar ? <p>{errors.avatar.message}</p> : null} */}
+            {errors.avatar ? <p>{errors.avatar.message}</p> : null}
           </div>
 
           <div className="mb-4">
             <label className="block" htmlFor="author">
-              author
+              Author
             </label>
             <input
               className="rounded pl-2"
               type="text"
               id="author"
-              // {...register("author")}
+              {...register("author")}
             />
-            {/* {errors.author ? <p>{errors.author.message}</p> : null} */}
+            {errors.author ? <p>{errors.author.message}</p> : null}
           </div>
 
           <div className="mb-4">
             <label className="block" htmlFor="categories">
-              categories
+              Categories
             </label>
             <input
               className="rounded pl-2"
               type="text"
               id="categories"
-              // {...register("categories")}
+              {...register("categories")}
             />
-            {/* {errors.categories ? <p>{errors.categories.message}</p> : null} */}
+            {errors.categories ? <p>{errors.categories.message}</p> : null}
           </div>
 
           <div className="text-center">

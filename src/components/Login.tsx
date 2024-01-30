@@ -8,6 +8,8 @@ import { useState } from "react";
 interface RegistrationProps {
   backgroundClick: boolean;
   toggleRegistration: (value: boolean) => void;
+  isUserLoggedIn: boolean;
+  setIsUserLoggedIn: (value: boolean) => void;
 }
 
 interface dataForm {
@@ -18,6 +20,8 @@ interface dataForm {
 const Login: React.FC<RegistrationProps> = ({
   backgroundClick,
   toggleRegistration,
+  isUserLoggedIn,
+  setIsUserLoggedIn,
 }) => {
   const [responseError, setResponseError] = useState(null);
   const backgroundClickhandler = (e) => {
@@ -49,6 +53,9 @@ const Login: React.FC<RegistrationProps> = ({
       const response = await axios.post(url, userData);
 
       const authToken = response.data.token;
+      if (authToken) {
+        setIsUserLoggedIn(true);
+      }
 
       localStorage.setItem("authToken", authToken);
       navigate("/dashboard");

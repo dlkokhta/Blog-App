@@ -7,8 +7,13 @@ const UserPage = () => {
     setIsCreateBlogOpen(!isCreateBlogOpen);
   };
   return (
-    <div>
-      <button onClick={crateBlogClickhandler}>Create Blog</button>
+    <div className="text-center mt-40">
+      <button
+        className="bg-green rounded-xl px-10 py-3 text-white hover:bg-blue " 
+        onClick={crateBlogClickhandler}
+      >
+        Create Blog
+      </button>
       {isCreateBlogOpen && (
         <CreateBlog
           backgroundClick={isCreateBlogOpen}
