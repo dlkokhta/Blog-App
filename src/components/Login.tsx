@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 interface RegistrationProps {
-  backgroundClick: boolean;
-  toggleRegistration: (value: boolean) => void;
+  isLoginOpen: boolean;
+  setIsLoginOpen: (value: boolean) => void;
   isUserLoggedIn: boolean;
   setIsUserLoggedIn: (value: boolean) => void;
 }
@@ -18,15 +18,15 @@ interface dataForm {
 }
 
 const Login: React.FC<RegistrationProps> = ({
-  backgroundClick,
-  toggleRegistration,
+  isLoginOpen,
+  setIsLoginOpen,
   isUserLoggedIn,
   setIsUserLoggedIn,
 }) => {
   const [responseError, setResponseError] = useState(null);
   const backgroundClickhandler = (e) => {
     e.preventDefault();
-    toggleRegistration(!backgroundClick);
+    setIsLoginOpen(!isLoginOpen);
   };
   const navigate = useNavigate();
   const {
@@ -37,9 +37,6 @@ const Login: React.FC<RegistrationProps> = ({
   } = useForm<dataForm>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: dataForm) => {
-    console.log("clicked");
-    console.log(data);
-
     // Perform any additional logic or API calls here
 
     const url = "http://localhost:3000/api/login";
@@ -53,13 +50,15 @@ const Login: React.FC<RegistrationProps> = ({
       const response = await axios.post(url, userData);
 
       const authToken = response.data.token;
+
       if (authToken) {
-        setIsUserLoggedIn(true);
+        setIsUserLoggedIn(!isUserLoggedIn);
       }
 
       localStorage.setItem("authToken", authToken);
-      navigate("/dashboard");
-      toggleRegistration(!backgroundClick);
+
+      navigate("/");
+      setIsLoginOpen(!isLoginOpen);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setResponseError(error.response?.data.message);
@@ -67,8 +66,6 @@ const Login: React.FC<RegistrationProps> = ({
       }
     }
   };
-
-  console.log("responseError", responseError);
 
   return (
     <div

@@ -4,8 +4,8 @@ import registrationSchema from "./registrationSchema";
 import axios from "axios";
 
 interface RegistrationProps {
-  backgroundClick: boolean;
-  toggleRegistration: (value: boolean) => void;
+  isRegistrationOpen: boolean;
+  setIsRegistrationOpen: (value: boolean) => void;
 }
 
 interface dataForm {
@@ -15,12 +15,12 @@ interface dataForm {
 }
 
 const Registration: React.FC<RegistrationProps> = ({
-  backgroundClick,
-  toggleRegistration,
+  isRegistrationOpen,
+  setIsRegistrationOpen,
 }) => {
   const backgroundClickhandler = (e) => {
     e.preventDefault();
-    toggleRegistration(!backgroundClick);
+    setIsRegistrationOpen(!isRegistrationOpen);
   };
 
   const {
@@ -31,8 +31,7 @@ const Registration: React.FC<RegistrationProps> = ({
   } = useForm<dataForm>({ resolver: yupResolver(registrationSchema) });
 
   const onSubmit = async (data: dataForm) => {
-    console.log(data);
-    // Perform any additional logic or API calls here
+       // Perform any additional logic or API calls here
 
     const url = "http://localhost:3000/api/registration";
 
@@ -44,12 +43,12 @@ const Registration: React.FC<RegistrationProps> = ({
 
     try {
       const response = await axios.post(url, userData);
-      console.log("response!!!!!!", response);
+      
       reset();
     } catch (error) {
       console.log(error);
     }
-    toggleRegistration(!backgroundClick);
+    setIsRegistrationOpen(!isRegistrationOpen);
   };
 
   return (

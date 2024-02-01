@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  theme: {},
+ 
 
   theme: {
     extend: {
@@ -12,7 +12,20 @@ export default {
         green: "#B7E5B4",
         pink: "#FFA447",  
         yellow: "#FFD447",
-        blue: "#7BD3EA"
+        blue: "#7BD3EA",
+        yellowOpacity: "#FFB82F",
+        greenOpacity: "#1CD67D",
+        purpleOpacity: "#B11CD6",
+        redOpracity: "#FA5757",
+        greenOpacity2: "#70CF25",
+        greenOpacity3: "#08D2AE",
+        yellowCategory: "#D6961C",
+        greenCategory: "#15C972",
+        purpleCategory: "#B71FDD",
+        redCategory: "#DC2828",
+        greenCategory2: "#60BE16",
+        greenCategory3: "#1AC7A8",
+
         
       },
     },

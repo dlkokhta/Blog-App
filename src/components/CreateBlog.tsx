@@ -61,90 +61,95 @@ const CreateBlog: React.FC<CreateBlogProps> = ({
   };
 
   return (
+    // <div
+    //   onClick={backgroundClickhandler}
+    //   className="top-0 left-0 right-0 w-full h-full pt-[120px] absolute bg-[#181818] bg-opacity-30 "
+    // >
     <div
-      onClick={backgroundClickhandler}
-      className="top-0 left-0 right-0 w-full h-full pt-[120px] absolute bg-[#181818] bg-opacity-30 "
+      onClick={(e) => e.stopPropagation()}
+      className="flex flex-col items-center bg-red-500 mx-[800px]"
     >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="flex flex-col items-center bg-red-500 mx-[800px]"
+      <form
+        encType="multipart/form-data"
+        onSubmit={handleSubmit(onSubmit)}
+        className="p-6 bg white bg-white2 rounded-md bg-green "
       >
-        <form
-          encType="multipart/form-data"
-          onSubmit={handleSubmit(onSubmit)}
-          className="p-6 bg white bg-white2 rounded-md bg-green "
-        >
-          <div className="mb-4">
-            <label className="block" htmlFor="title">
-              Title
-            </label>
-            <input
-              className="rounded"
-              type="text"
-              id="title"
-              {...register("title")}
-            />
-            {errors.title ? <p>{errors.title.message}</p> : null}
-          </div>
+        <div className="mb-4">
+          <label className="block" htmlFor="avatar">
+            Avatar
+          </label>
+          <input
+            className="rounded"
+            type="file"
+            id="avatar"
+            {...register("avatar")}
+          />
+          {errors.avatar ? <p>{errors.avatar.message}</p> : null}
+        </div>
+        <div className="mb-4">
+          <label className="block" htmlFor="title">
+            Title
+          </label>
+          <input
+            className="rounded"
+            type="text"
+            id="title"
+            {...register("title")}
+          />
+          {errors.title ? <p>{errors.title.message}</p> : null}
+        </div>
 
-          <div className="mb-4">
-            <label className="block" htmlFor="description">
-              Description
-            </label>
-            <input
-              className="rounded"
-              type="text"
-              id="description"
-              {...register("description")}
-            />
-            {errors.description ? <p>{errors.description.message}</p> : null}
-          </div>
+        <div className="mb-4">
+          <label className="block" htmlFor="description">
+            Description
+          </label>
+          <input
+            className="rounded"
+            type="text"
+            id="description"
+            {...register("description")}
+          />
+          {errors.description ? <p>{errors.description.message}</p> : null}
+        </div>
 
-          <div className="mb-4">
-            <label className="block" htmlFor="avatar">
-              Avatar
-            </label>
-            <input
-              className="rounded"
-              type="file"
-              id="avatar"
-              {...register("avatar")}
-            />
-            {errors.avatar ? <p>{errors.avatar.message}</p> : null}
-          </div>
+        <div className="mb-4">
+          <label className="block" htmlFor="author">
+            Author
+          </label>
+          <input
+            className="rounded pl-2"
+            type="text"
+            id="author"
+            {...register("author")}
+          />
+          {errors.author ? <p>{errors.author.message}</p> : null}
+        </div>
 
-          <div className="mb-4">
-            <label className="block" htmlFor="author">
-              Author
-            </label>
-            <input
-              className="rounded pl-2"
-              type="text"
-              id="author"
-              {...register("author")}
-            />
-            {errors.author ? <p>{errors.author.message}</p> : null}
-          </div>
+        <div className="mb-4">
+          <label className="block" htmlFor="categories">
+            Categories
+          </label>
+          <select
+            className="rounded pl-2"
+            id="categories"
+            {...register("categories")}
+          >
+            <option value="მარკეტი">მარკეტი</option>
+            <option value="აპლიკაცია">აპლიკაცია</option>
+            <option value="ხელოვნური ინტელექტი">ხელოვნური ინტელექტი</option>
+            <option value="UI/UX">UI/UX</option>
+            <option value="კვლევა">კვლევა</option>
+            <option value="figma">figma</option>
+            {/* Add more options as needed */}
+          </select>
+        </div>
 
-          <div className="mb-4">
-            <label className="block" htmlFor="categories">
-              Categories
-            </label>
-            <input
-              className="rounded pl-2"
-              type="text"
-              id="categories"
-              {...register("categories")}
-            />
-            {errors.categories ? <p>{errors.categories.message}</p> : null}
-          </div>
-
-          <div className="text-center">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
-      </div>
+        <div className="text-center">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
     </div>
+    // </div>
   );
 };
 

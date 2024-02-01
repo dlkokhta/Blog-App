@@ -13,12 +13,19 @@ const Header = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const navigate = useNavigate();
+
   const loginClickhandler = () => {
     setIsLoginOpen(!isLoginOpen);
-    if (isUserLoggedIn) {
-      localStorage.removeItem("authToken");
-      navigate("/");
-    }
+  };
+
+  const logOutClickhandler = () => {
+    localStorage.removeItem("authToken");
+    navigate("/");
+    setIsUserLoggedIn(!isUserLoggedIn);
+  };
+
+  const crateBlogClickhandler = () => {
+    navigate("/dashboard");
   };
 
   return (
@@ -29,32 +36,51 @@ const Header = () => {
             <img className="h-6" src={logo} alt="logo" />
           </Link>
           <div className="flex gap-2">
-            <button
-              onClick={registrationCLickHandle}
-              className="bg-blue text-white py-2 px-5 rounded-xl"
-            >
-              რეგისტრაცია
-            </button>
-            <button
-              onClick={loginClickhandler}
-              className="bg-green text-white py-2 px-5 rounded-xl"
-            >
-              {isUserLoggedIn ? "გასვლა" : "შესვლა"}
-            </button>
+            {isUserLoggedIn ? (
+              <button
+                className="bg-green text-white py-2 px-5 rounded-xl"
+                onClick={crateBlogClickhandler}
+              >
+                Create Blog
+              </button>
+            ) : (
+              <button
+                onClick={registrationCLickHandle}
+                className="bg-blue text-white py-2 px-5 rounded-xl"
+              >
+                რეგისტრაცია
+              </button>
+            )}
+
+            {isUserLoggedIn ? (
+              <button
+                onClick={logOutClickhandler}
+                className="bg-green text-white py-2 px-5 rounded-xl"
+              >
+                გასვლა
+              </button>
+            ) : (
+              <button
+                onClick={loginClickhandler}
+                className="bg-green text-white py-2 px-5 rounded-xl"
+              >
+                შესვლა
+              </button>
+            )}
           </div>
         </div>
       </header>
       <div>
         {isRegistrationOpen && (
           <Registration
-            backgroundClick={isRegistrationOpen}
-            toggleRegistration={setIsRegistrationOpen}
+            isRegistrationOpen={isRegistrationOpen}
+            setIsRegistrationOpen={setIsRegistrationOpen}
           />
         )}
         {isLoginOpen && (
           <Login
-            backgroundClick={isLoginOpen}
-            toggleRegistration={setIsLoginOpen}
+            isLoginOpen={isLoginOpen}
+            setIsLoginOpen={setIsLoginOpen}
             isUserLoggedIn={isUserLoggedIn}
             setIsUserLoggedIn={setIsUserLoggedIn}
           />
