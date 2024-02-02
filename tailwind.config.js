@@ -9,6 +9,7 @@ export default {
         purple: "#5D37F3",
         white: "#FFFFFF",
         white2: "#F3F2FA",
+        white3: "#FCFCFD",
         green: "#B7E5B4",
         pink: "#FFA447",  
         yellow: "#FFD447",
@@ -25,6 +26,13 @@ export default {
         redCategory: "#DC2828",
         greenCategory2: "#60BE16",
         greenCategory3: "#1AC7A8",
+        grey: "#85858D",
+        lightGray: "#E4E3EB",
+        green1: "#14D81C",
+        lightGreen: "#F8FFF8",
+        lightRed: "#FAF2F3"
+
+        
 
         
       },

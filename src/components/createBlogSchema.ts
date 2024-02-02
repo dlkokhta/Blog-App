@@ -11,21 +11,28 @@ const createBlogSchema = yup.object({
         .min(4, "Description must be 4 or more characters")
         .required("Description is required"),
 
-    avatar: yup
-        .mixed()
-        .required("Avatar is required")
-        .test("fileSize", "File size is too large", (value) => {
-            // Adjust the file size limit according to your needs
-            return value && value[0].size <= 1024 * 1024 * 5; // 5 MB
-        })
-        .test("fileType", "Invalid file type", (value) => {
-            return value && value[0].type.startsWith("image/");
-        }),
+    avatar: yup.mixed().required("Avatar is required"),
 
     author: yup
         .string()
         .min(4, "Author must be 4 or more characters")
-        .required("Author is required"),
+        .required("Author is required")
+        .test(
+            "two-words",
+            "Author must be at least two words",
+            (value: string | undefined) => {
+                if (!value) return false;
+                return value.trim().split(/\s+/).length >= 2;
+            }
+        )
+        .test(
+            "english-letters",
+            "Author can only contain English letters",
+            (value: string | undefined) => {
+                if (!value) return false;
+                return /^[A-Za-z\s]+$/.test(value);
+            }
+        ),
 
     categories: yup
         .string()

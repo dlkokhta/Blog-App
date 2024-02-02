@@ -9,11 +9,11 @@
 body {
   width: 100vw;
   max-height: 100vh;
-  /* background-color: #121721; */
+ 
 }
 
 
-/* #root {
+#root {
   height: 100%;
 }
 
@@ -21,7 +21,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
+} 
 
 
 

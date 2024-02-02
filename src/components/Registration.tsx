@@ -31,7 +31,7 @@ const Registration: React.FC<RegistrationProps> = ({
   } = useForm<dataForm>({ resolver: yupResolver(registrationSchema) });
 
   const onSubmit = async (data: dataForm) => {
-       // Perform any additional logic or API calls here
+    // Perform any additional logic or API calls here
 
     const url = "http://localhost:3000/api/registration";
 
@@ -42,8 +42,8 @@ const Registration: React.FC<RegistrationProps> = ({
     };
 
     try {
-      const response = await axios.post(url, userData);
-      
+      await axios.post(url, userData);
+
       reset();
     } catch (error) {
       console.log(error);

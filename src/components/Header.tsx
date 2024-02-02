@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className="">
+      <header>
         <div className="flex py-5 px-20 justify-between items-center">
           <Link to="/">
             <img className="h-6" src={logo} alt="logo" />
