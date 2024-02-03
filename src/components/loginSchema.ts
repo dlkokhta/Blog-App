@@ -2,10 +2,10 @@ import * as yup from "yup";
 
 const registrationSchema = yup.object({
   email: yup
-    .string(),
+    .string().required(),
 
   password: yup
-    .string()
+    .string().required(),
 
 });
 
