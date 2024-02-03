@@ -30,8 +30,8 @@ export default {
         lightGray: "#E4E3EB",
         green1: "#14D81C",
         lightGreen: "#F8FFF8",
-        lightRed: "#FAF2F3"
-
+        lightRed: "#FAF2F3",
+        grey2:"#85858D"
         
 
         

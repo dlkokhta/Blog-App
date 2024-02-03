@@ -279,7 +279,7 @@ const CreateBlog = () => {
           <option value="Artificial intelligence">
             Artificial Intelligence
           </option>
-          <option value="UI/UX">UI/UX</option>
+          <option value="sport">sport</option>
           <option value="research">Research</option>
           <option value="figma">Figma</option>
         </select>
