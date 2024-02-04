@@ -20,25 +20,24 @@ const Header = () => {
     setIsLoginOpen(!isLoginOpen);
   };
 
+  // useEffect(() => {
+  //   if (localStorage.getItem("authToken")) {
+  //     setIsVerifyOpen(true);
+  //   }
+  // }, [isLoginOpen]);
+
   const logOutClickhandler = () => {
     localStorage.removeItem("authToken");
     navigate("/");
     setIsUserLoggedIn(!isUserLoggedIn);
   };
 
-  useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      setIsVerifyOpen(true);
-    }
-  }, [isLoginOpen]);
-
   const crateBlogClickhandler = () => {
     navigate("/dashboard");
   };
 
   const verifyButtonClickHandler = () => {
-    setIsVerifyOpen(!isVerifyOpen);
+    setIsVerifyOpen(false);
   };
 
   return (
@@ -105,10 +104,7 @@ const Header = () => {
       {isVerifyOpen && (
         <div className="top-0 left-0 right-0 w-full h-full pt-[120px] absolute bg-[#181818] bg-opacity-30 ">
           <div className="flex justify-center">
-            <form
-              onClick={verifyButtonClickHandler}
-              className="pt-16 pb-10 bg white bg-white2 rounded-md bg-green flex flex-col items-center w-[480px]"
-            >
+            <div className="pt-16 pb-10 bg white bg-white2 rounded-md bg-green flex flex-col items-center w-[480px]">
               <img
                 className="w-10 h-10 mb-10"
                 src={successIcon}
@@ -119,13 +115,14 @@ const Header = () => {
               </h1>
               <div className="flex justify-center">
                 <button
-                  type="submit"
+                  onClick={verifyButtonClickHandler}
+                  type="button"
                   className="bg-green1 py-2 px-48 rounded-xl text-white text-xl"
                 >
                   ok
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

@@ -42,7 +42,7 @@ const CreateBlog = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response!!!!!!", response);
+
       reset();
     } catch (error) {
       console.log(error);
@@ -98,6 +98,13 @@ const CreateBlog = () => {
     setIsDescriptionLengthValid(description.length >= 4 ? true : false);
   };
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
+
   return (
     // <div className="bg-white3">
     <form
@@ -112,7 +119,7 @@ const CreateBlog = () => {
         <i className="fas fa-folder-plus fa-2x text-blue-500 mb-2"></i>
 
         <label htmlFor="avatar" className="mb-2 cursor-pointer relative">
-          choose file
+          Choose file
           <input
             className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
             style={{
@@ -123,9 +130,17 @@ const CreateBlog = () => {
             }}
             type="file"
             id="avatar"
-            {...register("avatar")}
+            {...register("avatar", { onChange: handleFileChange })}
           />
         </label>
+
+        {selectedFile && (
+          <div className="text-sm mt-2">
+            <p>
+              File Name: <strong>{selectedFile.name}</strong>
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="flex mb-6 gap-6 ">

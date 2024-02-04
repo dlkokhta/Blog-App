@@ -39,7 +39,7 @@ const BlogCategories = () => {
     const fetchBlogsByCategory = async () => {
       try {
         const response = await axios.get(url);
-        console.log("response!!!!!!", response);
+
         setBlogsByCategory(response.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
