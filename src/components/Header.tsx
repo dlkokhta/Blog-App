@@ -48,7 +48,7 @@ const Header = () => {
             <div className="flex gap-2">
               {savedUserLoggedInState ? (
                 <button
-                  className="bg-green text-white ext-lg py-2 px-5 rounded-xl"
+                  className="bg-green text-white ext-lg py-2 px-5 rounded-xl cursor-pointer"
                   onClick={crateBlogClickhandler}
                 >
                   Create Blog

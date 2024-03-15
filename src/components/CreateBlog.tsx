@@ -26,13 +26,10 @@ const CreateBlog = () => {
   const title = watch("title");
   const description = watch("description");
   const author = watch("author");
-
-  // const titleInputChnageHandler = async (event: any) => {
-  //   event.preventDefault();
-  //   // await trigger("title");
-  //   console.log("title", title);
+  const categories = watch("categories");
+  // const handleFileReset = () => {
+  //   setSelectedFile(null);
   // };
-
   const onSubmit = async (data: dataForm) => {
     console.log("dataaaa", data);
 
@@ -54,65 +51,15 @@ const CreateBlog = () => {
         },
       });
 
+      setSelectedFile(null);
       reset();
     } catch (error) {
       console.log(error);
     }
   };
-  // author
-  // const [author, setAuthor] = useState<string>("");
-  // const [isAuthorLengthValid, setIsAuthorLengthValid] = useState<
-  //   boolean | null
-  // >(null);
-  // const [isAuthorWordsValid, setIsAuthorWordsValid] = useState<boolean | null>(
-  //   null
-  // );
-  // const [isAuthorEnglishValid, setIsAuthorEnglishValid] = useState<
-  //   boolean | null
-  // >(null);
-
-  // const authorInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   setAuthor(value);
-
-  //   setIsAuthorLengthValid(author.length >= 3 ? true : false);
-  //   setIsAuthorWordsValid(
-  //     author.trim().split(/\s+/).length >= 2 ? true : false
-  //   );
-  //   setIsAuthorEnglishValid(/^[A-Za-z\s]*$/.test(value));
-  // };
-
-  // title
-
-  // const [title, setTitle] = useState<string>("");
-  // const [isTitleLengthValid, setIsTitleLengthValid] = useState<boolean | null>(
-  //   null
-  // );
-
-  // const titleInputChnageHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   setTitle(value);
-  //   console.log("value", value);
-
-  //   setIsTitleLengthValid(title.length >= 3 ? true : false);
-  // };
-
-  // const [description, setDescription] = useState<string>("");
-  // const [isDescriptionLengthValid, setIsDescriptionLengthValid] = useState<
-  //   boolean | null
-  // >(null);
-
-  // const descriptionInputChnageHandler = (
-  //   event: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const value = event.target.value;
-  //   setDescription(value);
-
-  //   setIsDescriptionLengthValid(description.length >= 4 ? true : false);
-  // };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  console.log(selectedFile, "selectedFile");
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     setSelectedFile(file);
@@ -142,7 +89,6 @@ const CreateBlog = () => {
             }}
             type="file"
             id="avatar"
-            value={selectedFile ? selectedFile.name : ""}
             {...register("avatar", { onChange: handleFileChange })}
           />
         </label>
@@ -177,7 +123,6 @@ const CreateBlog = () => {
               type="text"
               id="author"
               {...register("author")}
-              // {...register("author", { onChange: authorInputChangeHandler })}
             />
             {errors.author ? <p>{errors.author.message}</p> : null}
           </div>
@@ -325,6 +270,7 @@ const CreateBlog = () => {
         <button
           className={`rounded-md text-2xl px-28 py-2 text-white ${
             author &&
+            categories &&
             author.length >= 4 &&
             author.trim().split(/\s+/).length >= 2 &&
             /^[A-Za-z\s]*$/.test(author) &&

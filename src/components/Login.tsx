@@ -48,6 +48,8 @@ const Login: React.FC<RegistrationProps> = ({
       password: data.password,
     };
 
+    console.log(typeof userData, "userData");
+
     try {
       const response = await axios.post(url, userData);
 
