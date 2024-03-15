@@ -14,24 +14,6 @@ interface Blog {
   email: string;
 }
 
-const bgColors = [
-  "rgba(255, 184, 47, 0.08)",
-  "rgba(28, 214, 125, 0.08)",
-  "rgba(177, 28, 214, 0.08)",
-  "rgba(250, 87, 87, 0.08)",
-  "rgba(112, 207, 37, 0.08)",
-  "rgba(8, 210, 174, 0.08)",
-];
-
-const textColors = [
-  "#D6961C",
-  "#15C972",
-  "#B71FDD",
-  "#DC2828",
-  "#60BE16",
-  "#1AC7A8",
-];
-
 const BlogByID = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState<Blog | null>(null);
@@ -115,7 +97,7 @@ const BlogByID = () => {
                     alt={blog.title}
                   />
                   <h2 className="font-bold">{blog.author}</h2>
-                  <h4>{blog.publish_date}</h4>
+                  <h4>{formattedDate}</h4>
                   <h1 className="font-bold text-3xl">{blog.title}</h1>
                   <p className="">
                     {blog.description.split(" ").slice(0, 20).join(" ")}

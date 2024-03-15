@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import registrationSchema from "./registrationSchema";
 import axios from "axios";
+import { useState } from "react";
 
 interface RegistrationProps {
   isRegistrationOpen: boolean;
@@ -18,7 +19,8 @@ const Registration: React.FC<RegistrationProps> = ({
   isRegistrationOpen,
   setIsRegistrationOpen,
 }) => {
-  const backgroundClickhandler = (e) => {
+  const [backError, setBackError] = useState<string | null>(null);
+  const backgroundClickhandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsRegistrationOpen(!isRegistrationOpen);
   };
@@ -44,11 +46,13 @@ const Registration: React.FC<RegistrationProps> = ({
     try {
       await axios.post(url, userData);
 
+      setIsRegistrationOpen(!isRegistrationOpen);
+
       reset();
-    } catch (error) {
+    } catch (error: any) {
+      setBackError(error.response.data);
       console.log(error);
     }
-    setIsRegistrationOpen(!isRegistrationOpen);
   };
 
   return (
@@ -62,8 +66,9 @@ const Registration: React.FC<RegistrationProps> = ({
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="p-6 bg white bg-white2 rounded-md bg-green "
+          className="p-6 bg white bg-white2 rounded-md  "
         >
+          <h1 className="font-bold text-2xl text-center">Registration</h1>
           <div className="mb-4">
             <label className="block" htmlFor="username">
               username
@@ -74,7 +79,11 @@ const Registration: React.FC<RegistrationProps> = ({
               id="username"
               {...register("username")}
             />
+
             {errors.username ? <p>{errors.username.message}</p> : null}
+            {backError === "Username is already taken" ? (
+              <p>{backError}</p>
+            ) : null}
           </div>
           <div className="mb-4">
             <label className="block" htmlFor="email">
@@ -87,6 +96,7 @@ const Registration: React.FC<RegistrationProps> = ({
               {...register("email")}
             />
             {errors.email ? <p>{errors.email.message}</p> : null}
+            {backError === "Email is already taken" ? <p>{backError}</p> : null}
           </div>
           <div className="mb-4">
             <label className="block" htmlFor="password">
@@ -94,7 +104,7 @@ const Registration: React.FC<RegistrationProps> = ({
             </label>
             <input
               className="rounded pl-2"
-              type="text"
+              type="password"
               id="password"
               {...register("password")}
             />

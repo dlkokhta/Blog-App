@@ -1,6 +1,6 @@
 import Home from "./pages/home";
 import Dashboard from "./pages/dashboard";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import BlogByID from "./pages/blogByID";
 import "./App.css";

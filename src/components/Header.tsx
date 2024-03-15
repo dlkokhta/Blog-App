@@ -1,6 +1,5 @@
-import logo from "../assets/Logo.png";
 import Registration from "./Registration";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -14,22 +13,20 @@ const Header = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isVerifyOpen, setIsVerifyOpen] = useState(false);
 
+  const savedUserLoggedInState = localStorage.getItem("isUserLoggedIn");
+  console.log("savedUserLoggedInState", savedUserLoggedInState);
+
   const navigate = useNavigate();
 
   const loginClickhandler = () => {
     setIsLoginOpen(!isLoginOpen);
   };
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("authToken")) {
-  //     setIsVerifyOpen(true);
-  //   }
-  // }, [isLoginOpen]);
-
   const logOutClickhandler = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("isUserLoggedIn");
     navigate("/");
-    setIsUserLoggedIn(!isUserLoggedIn);
+    setIsUserLoggedIn(true);
   };
 
   const crateBlogClickhandler = () => {
@@ -44,14 +41,14 @@ const Header = () => {
     <>
       <div>
         <header>
-          <div className="flex py-5 px-20 justify-between items-center">
+          <div className="flex py-5 px-20 justify-between items-center bg-white2 mt-5 rounded-xl">
             <Link to="/">
-              <img className="h-6" src={logo} alt="logo" />
+              <h1 className="text-3xl font-bold text-red-600">BLOG</h1>
             </Link>
             <div className="flex gap-2">
-              {isUserLoggedIn ? (
+              {savedUserLoggedInState ? (
                 <button
-                  className="bg-green text-white py-2 px-5 rounded-xl"
+                  className="bg-green text-white ext-lg py-2 px-5 rounded-xl"
                   onClick={crateBlogClickhandler}
                 >
                   Create Blog
@@ -59,25 +56,25 @@ const Header = () => {
               ) : (
                 <button
                   onClick={registrationCLickHandle}
-                  className="bg-blue text-white py-2 px-5 rounded-xl"
+                  className="bg-blue text-white text-md py-2 px-5 rounded-xl"
                 >
-                  რეგისტრაცია
+                  registration
                 </button>
               )}
 
-              {isUserLoggedIn ? (
+              {savedUserLoggedInState ? (
                 <button
                   onClick={logOutClickhandler}
-                  className="bg-green text-white py-2 px-5 rounded-xl"
+                  className="bg-green text-white text-md py-2 px-5 rounded-xl"
                 >
-                  გასვლა
+                  log out
                 </button>
               ) : (
                 <button
                   onClick={loginClickhandler}
-                  className="bg-green text-white py-2 px-5 rounded-xl"
+                  className="bg-green text-white text-md py-2 px-5 rounded-xl"
                 >
-                  შესვლა
+                  Log in
                 </button>
               )}
             </div>
@@ -96,6 +93,7 @@ const Header = () => {
               setIsLoginOpen={setIsLoginOpen}
               isUserLoggedIn={isUserLoggedIn}
               setIsUserLoggedIn={setIsUserLoggedIn}
+              setIsVerifyOpen={setIsVerifyOpen}
             />
           )}
         </div>
@@ -104,7 +102,7 @@ const Header = () => {
       {isVerifyOpen && (
         <div className="top-0 left-0 right-0 w-full h-full pt-[120px] absolute bg-[#181818] bg-opacity-30 ">
           <div className="flex justify-center">
-            <div className="pt-16 pb-10 bg white bg-white2 rounded-md bg-green flex flex-col items-center w-[480px]">
+            <div className="pt-16 pb-10 bg white rounded-md bg-white flex flex-col items-center w-[480px]">
               <img
                 className="w-10 h-10 mb-10"
                 src={successIcon}

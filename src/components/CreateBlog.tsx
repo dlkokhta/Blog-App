@@ -3,13 +3,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import CreateBlogSchema from "./createBlogSchema";
 import axios from "axios";
 import folderIcon from "../assets/folderIcon.png";
-import React, { ChangeEvent } from "react";
 import { useState } from "react";
 
 interface dataForm {
   title: string;
   description: string;
-  avatar: FileList;
+  avatar: string;
   author: string;
   categories: string;
 }
@@ -20,7 +19,19 @@ const CreateBlog = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<dataForm>({ resolver: yupResolver(CreateBlogSchema) });
+    watch,
+    trigger,
+  } = useForm<any>({ resolver: yupResolver(CreateBlogSchema) });
+
+  const title = watch("title");
+  const description = watch("description");
+  const author = watch("author");
+
+  // const titleInputChnageHandler = async (event: any) => {
+  //   event.preventDefault();
+  //   // await trigger("title");
+  //   console.log("title", title);
+  // };
 
   const onSubmit = async (data: dataForm) => {
     console.log("dataaaa", data);
@@ -31,12 +42,12 @@ const CreateBlog = () => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("avatar", data.avatar[0]); // Assuming you want only the first file in the list
+    formData.append("avatar", data.avatar[0]);
     formData.append("author", data.author);
     formData.append("categories", data.categories);
 
     try {
-      const response = await axios.post(url, formData, {
+      await axios.post(url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -48,65 +59,66 @@ const CreateBlog = () => {
       console.log(error);
     }
   };
+  // author
+  // const [author, setAuthor] = useState<string>("");
+  // const [isAuthorLengthValid, setIsAuthorLengthValid] = useState<
+  //   boolean | null
+  // >(null);
+  // const [isAuthorWordsValid, setIsAuthorWordsValid] = useState<boolean | null>(
+  //   null
+  // );
+  // const [isAuthorEnglishValid, setIsAuthorEnglishValid] = useState<
+  //   boolean | null
+  // >(null);
 
-  const [author, setAuthor] = useState<string>("");
-  const [isAuthorLengthValid, setIsAuthorLengthValid] = useState<
-    boolean | null
-  >(null);
-  const [isAuthorWordsValid, setIsAuthorWordsValid] = useState<boolean | null>(
-    null
-  );
-  const [isAuthorEnglishValid, setIsAuthorEnglishValid] = useState<
-    boolean | null
-  >(null);
-  console.log(isAuthorLengthValid, isAuthorWordsValid, isAuthorEnglishValid);
+  // const authorInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const value = event.target.value;
+  //   setAuthor(value);
 
-  const authorInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setAuthor(value);
+  //   setIsAuthorLengthValid(author.length >= 3 ? true : false);
+  //   setIsAuthorWordsValid(
+  //     author.trim().split(/\s+/).length >= 2 ? true : false
+  //   );
+  //   setIsAuthorEnglishValid(/^[A-Za-z\s]*$/.test(value));
+  // };
 
-    setIsAuthorLengthValid(author.length >= 4 ? true : false);
-    setIsAuthorWordsValid(
-      author.trim().split(/\s+/).length >= 2 ? true : false
-    );
-    setIsAuthorEnglishValid(/^[A-Za-z\s]*$/.test(value));
-  };
+  // title
 
-  const [title, setTitle] = useState<string>("");
-  const [isTitleLengthValid, setIsTitleLengthValid] = useState<boolean | null>(
-    null
-  );
+  // const [title, setTitle] = useState<string>("");
+  // const [isTitleLengthValid, setIsTitleLengthValid] = useState<boolean | null>(
+  //   null
+  // );
 
-  const titleInputChnageHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setTitle(value);
+  // const titleInputChnageHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const value = event.target.value;
+  //   setTitle(value);
+  //   console.log("value", value);
 
-    setIsTitleLengthValid(title.length >= 4 ? true : false);
-  };
+  //   setIsTitleLengthValid(title.length >= 3 ? true : false);
+  // };
 
-  const [description, setDescription] = useState<string>("");
-  const [isDescriptionLengthValid, setIsDescriptionLengthValid] = useState<
-    boolean | null
-  >(null);
+  // const [description, setDescription] = useState<string>("");
+  // const [isDescriptionLengthValid, setIsDescriptionLengthValid] = useState<
+  //   boolean | null
+  // >(null);
 
-  const descriptionInputChnageHandler = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setDescription(value);
+  // const descriptionInputChnageHandler = (
+  //   event: ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const value = event.target.value;
+  //   setDescription(value);
 
-    setIsDescriptionLengthValid(description.length >= 4 ? true : false);
-  };
+  //   setIsDescriptionLengthValid(description.length >= 4 ? true : false);
+  // };
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
     setSelectedFile(file);
   };
 
   return (
-    // <div className="bg-white3">
     <form
       encType="multipart/form-data"
       onSubmit={handleSubmit(onSubmit)}
@@ -114,7 +126,7 @@ const CreateBlog = () => {
     >
       <h1 className="mr-auto font-bold text-4xl pb-10">add blog</h1>
       <h4 className="mr-auto font-bold text-sm mb-1">upload photo</h4>
-      <div className="w-full py-12 bg-white2 flex flex-col items-center justify-center rounded-xl border border-dashed border-2 border-grey relative mb-6">
+      <div className="w-full py-12 bg-white2 flex flex-col items-center justify-center rounded-xl border border-dashed border-grey relative mb-6">
         <img className="w-8 h-8" src={folderIcon} alt="folderIcon" />
         <i className="fas fa-folder-plus fa-2x text-blue-500 mb-2"></i>
 
@@ -130,6 +142,7 @@ const CreateBlog = () => {
             }}
             type="file"
             id="avatar"
+            value={selectedFile ? selectedFile.name : ""}
             {...register("avatar", { onChange: handleFileChange })}
           />
         </label>
@@ -151,29 +164,31 @@ const CreateBlog = () => {
             </label>
             <input
               className={`rounded-xl border outline-none  h-12 w-72 pl-4 ${
-                isAuthorEnglishValid === null
+                author === undefined || author === ""
                   ? "border-lightGrey"
-                  : isAuthorLengthValid &&
-                    isAuthorWordsValid &&
-                    isAuthorEnglishValid
+                  : author &&
+                    author.length >= 4 &&
+                    author.trim().split(/\s+/).length >= 2 &&
+                    /^[A-Za-z\s]*$/.test(author)
                   ? "border-green1 bg-lightGreen"
                   : "border-red-500 bg-lightRed"
               }`}
               placeholder="enter athor"
               type="text"
               id="author"
-              {...register("author", { onChange: authorInputChangeHandler })}
+              {...register("author")}
+              // {...register("author", { onChange: authorInputChangeHandler })}
             />
             {errors.author ? <p>{errors.author.message}</p> : null}
           </div>
 
           <div>
-            <ul className="list-disc pl-4 text-grey pl-4">
+            <ul className="list-disc pl-4 text-grey">
               <li
                 className={
-                  isAuthorLengthValid === null
+                  author === undefined || author === ""
                     ? "text-grey"
-                    : isAuthorLengthValid
+                    : author && author.length >= 4
                     ? "text-green1"
                     : "text-red-500"
                 }
@@ -182,9 +197,12 @@ const CreateBlog = () => {
               </li>
               <li
                 className={
-                  isAuthorWordsValid === null
+                  author === undefined ||
+                  author === "" ||
+                  (author &&
+                    author.trim().split(/\s+/).length >= 2 === undefined)
                     ? "text-grey"
-                    : isAuthorWordsValid
+                    : author && author.trim().split(/\s+/).length >= 2
                     ? "text-green1"
                     : "text-red-500"
                 }
@@ -193,9 +211,11 @@ const CreateBlog = () => {
               </li>
               <li
                 className={
-                  isAuthorEnglishValid === null
+                  author === undefined ||
+                  author === "" ||
+                  (author && /^[A-Za-z\s]*$/.test(author) === null)
                     ? "text-grey"
-                    : isAuthorEnglishValid
+                    : /^[A-Za-z\s]*$/.test(author)
                     ? "text-green1"
                     : "text-red-500"
                 }
@@ -214,25 +234,25 @@ const CreateBlog = () => {
               </label>
               <input
                 className={`rounded-xl border outline-none  h-12 w-72  pl-4 ${
-                  isTitleLengthValid === null
+                  title === undefined || title === ""
                     ? "border-lightGrey"
-                    : isTitleLengthValid
+                    : title && title.length >= 4
                     ? "border-green1 bg-lightGreen"
                     : "border-red-500 bg-lightRed"
                 } `}
                 placeholder="enter title"
                 type="text"
                 id="title"
-                {...register("title", { onChange: titleInputChnageHandler })}
+                {...register("title")}
               />
               {errors.title ? <p>{errors.title.message}</p> : null}
             </div>
             <ul className="list-disc text-grey pl-4">
               <li
                 className={
-                  isTitleLengthValid === null
+                  title === undefined || title === ""
                     ? "text-grey"
-                    : isTitleLengthValid
+                    : title && title.length >= 4
                     ? "text-green1"
                     : "text-red-500"
                 }
@@ -250,23 +270,24 @@ const CreateBlog = () => {
         </label>
         <textarea
           className={`rounded-md border w-full h-32 outline-none ${
-            isDescriptionLengthValid === null
+            description === "" || description === undefined
               ? "border-lightGrey"
-              : isDescriptionLengthValid
+              : description && description.length >= 4
               ? "border-green1 bg-lightGreen"
               : "border-red-500 bg-lightRed"
           }`}
           id="description"
-          {...register("description", {
-            onChange: descriptionInputChnageHandler,
-          })}
+          {...register("description")}
+          // {...register("description", {
+          //   onChange: descriptionInputChnageHandler,
+          // })}
         />
         <ul className="list-disc text-grey pl-4">
           <li
             className={
-              isDescriptionLengthValid === null
+              description === "" || description === undefined
                 ? "text-grey"
-                : isDescriptionLengthValid
+                : description && description.length >= 4
                 ? "text-green1"
                 : "text-red-500"
             }
@@ -276,12 +297,12 @@ const CreateBlog = () => {
         </ul>
         {errors.description ? <p>{errors.description.message}</p> : null}
       </div>
-      <div className="mb-4 mr-auto mb-10">
+      <div className="mb-4 mr-auto md:mb-10">
         <label className="block font-bold text-sm mb-2" htmlFor="categories">
           category
         </label>
         <select
-          className="rounded pl-2 py-2 rounded-md"
+          className="rounded pl-2 py-2"
           id="categories"
           {...register("categories")}
           defaultValue=""
@@ -303,11 +324,11 @@ const CreateBlog = () => {
       <div className="ml-auto">
         <button
           className={`rounded-md text-2xl px-28 py-2 text-white ${
-            isAuthorLengthValid &&
-            isAuthorWordsValid &&
-            isAuthorEnglishValid &&
-            isTitleLengthValid &&
-            isDescriptionLengthValid
+            author &&
+            author.length >= 4 &&
+            author.trim().split(/\s+/).length >= 2 &&
+            /^[A-Za-z\s]*$/.test(author) &&
+            description
               ? "bg-green1"
               : "bg-lightGray"
           }`}
@@ -317,7 +338,6 @@ const CreateBlog = () => {
         </button>
       </div>
     </form>
-    // </div>
   );
 };
 

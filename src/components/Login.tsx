@@ -10,6 +10,8 @@ interface RegistrationProps {
   setIsLoginOpen: (value: boolean) => void;
   isUserLoggedIn: boolean;
   setIsUserLoggedIn: (value: boolean) => void;
+
+  setIsVerifyOpen: (value: boolean) => void;
 }
 
 interface dataForm {
@@ -22,9 +24,11 @@ const Login: React.FC<RegistrationProps> = ({
   setIsLoginOpen,
   isUserLoggedIn,
   setIsUserLoggedIn,
+  setIsVerifyOpen,
 }) => {
   const [responseError, setResponseError] = useState(null);
-  const backgroundClickhandler = (e) => {
+  console.log("responseError", responseError);
+  const backgroundClickhandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsLoginOpen(!isLoginOpen);
   };
@@ -32,13 +36,11 @@ const Login: React.FC<RegistrationProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     // reset,
   } = useForm<dataForm>({ resolver: yupResolver(loginSchema) });
 
   const onSubmit = async (data: dataForm) => {
-    // Perform any additional logic or API calls here
-
     const url = "http://localhost:3000/api/login";
 
     const userData = {
@@ -53,17 +55,17 @@ const Login: React.FC<RegistrationProps> = ({
 
       if (authToken) {
         setIsUserLoggedIn(!isUserLoggedIn);
+        localStorage.setItem("isUserLoggedIn", String(!isUserLoggedIn));
       }
+      setIsVerifyOpen(true);
 
       localStorage.setItem("authToken", authToken);
 
       navigate("/");
       setIsLoginOpen(!isLoginOpen);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setResponseError(error.response?.data.message);
-        console.log("errorrr", error);
-      }
+    } catch (error: any) {
+      setResponseError(error.response.data.message);
+      console.log(error.response.data.message);
     }
   };
 
@@ -79,9 +81,9 @@ const Login: React.FC<RegistrationProps> = ({
         >
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="p-6 bg white bg-white2 rounded-md bg-green "
+            className="p-6 bg white bg-white2 rounded-md"
           >
-            <h1 className="font-bold text-3xl text-center">login</h1>
+            <h1 className="font-bold text-2xl text-center">login</h1>
 
             <div className="mb-4">
               <label className="block" htmlFor="email">
@@ -94,7 +96,11 @@ const Login: React.FC<RegistrationProps> = ({
                 id="email"
                 {...register("email")}
               />
-              {responseError ? <h1>{responseError}</h1> : null}
+              {responseError === "Username is wrong" ? (
+                <h1>{responseError}</h1>
+              ) : (
+                ""
+              )}
             </div>
             <div className="mb-4">
               <label className="block" htmlFor="password">
@@ -102,11 +108,15 @@ const Login: React.FC<RegistrationProps> = ({
               </label>
               <input
                 className="rounded pl-2"
-                type="text"
+                type="password"
                 id="password"
                 {...register("password")}
               />
-              {responseError ? <h1>{responseError}</h1> : null}
+              {responseError === "password is wrong" ? (
+                <h1>{responseError}</h1>
+              ) : (
+                ""
+              )}
             </div>
             <div className="text-center">
               <button type="submit">Submit</button>

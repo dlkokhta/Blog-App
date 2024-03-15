@@ -33,6 +33,13 @@ const GetAllBlogs = () => {
   }, []);
   const navigate = useNavigate();
 
+  const date = new Date("2024-01-31T06:35:08.888Z");
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
   return (
     <div className="px-14 mt-5 h-10">
       <ul className="grid grid-cols-3 gap-10">
@@ -45,7 +52,7 @@ const GetAllBlogs = () => {
                 alt={blog.title}
               />
               <h2 className="font-bold">{blog.author}</h2>
-              <h4>{blog.publish_date}</h4>
+              <h4>{formattedDate}</h4>
               <h1 className="font-bold text-3xl">{blog.title}</h1>
               <p className="">
                 {blog.description.split(" ").slice(0, 20).join(" ")}
@@ -56,7 +63,7 @@ const GetAllBlogs = () => {
                   onClick={() => navigate(`/blog/${blog.blogID}`)}
                   className="text-md overflow-ellipsis mt-1 ml-1 text-purple cursor-pointer"
                 >
-                  სრულად ნახვა
+                  see all
                 </span>
                 <img
                   className="w-4 h-4 "
