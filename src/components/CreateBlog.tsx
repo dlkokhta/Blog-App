@@ -20,7 +20,6 @@ const CreateBlog = () => {
     formState: { errors },
     reset,
     watch,
-    trigger,
   } = useForm<any>({ resolver: yupResolver(CreateBlogSchema) });
 
   const title = watch("title");
@@ -124,7 +123,7 @@ const CreateBlog = () => {
               id="author"
               {...register("author")}
             />
-            {errors.author ? <p>{errors.author.message}</p> : null}
+            {errors.author ? <p>{errors.author.message?.toString()}</p> : null}
           </div>
 
           <div>
@@ -190,7 +189,7 @@ const CreateBlog = () => {
                 id="title"
                 {...register("title")}
               />
-              {errors.title ? <p>{errors.title.message}</p> : null}
+              {errors.title ? <p>{errors.title.message?.toString()}</p> : null}
             </div>
             <ul className="list-disc text-grey pl-4">
               <li
@@ -240,7 +239,9 @@ const CreateBlog = () => {
             minimum 4 symbols
           </li>
         </ul>
-        {errors.description ? <p>{errors.description.message}</p> : null}
+        {errors.description ? (
+          <p>{errors.description.message?.toString()}</p>
+        ) : null}
       </div>
       <div className="mb-4 mr-auto md:mb-10">
         <label className="block font-bold text-sm mb-2" htmlFor="categories">
